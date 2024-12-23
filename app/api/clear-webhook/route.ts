@@ -7,9 +7,9 @@ let verificationData: Record<string, unknown> | null = null;
 export async function POST(req: NextRequest) {
     try {
         // Load environment variables
-        const webhookToken = process.env.WEBHOOK_TOKEN;
-        const hmacSecret = process.env.HMAC_SECRET;
-        const apiKey = process.env.API_KEY;
+        const webhookToken = "wyRJMqYo8RomW17RBmOs9VI1nqkFmI7TM9PTX0dhs1";
+        const hmacSecret = "oDWf1xn9HGll6DvL2gB5k8tYNeBHBkezeTcFS0LPFX";
+        const apiKey = "sandbox_Rz9rdzyLMLjDjpXgfxpzWoGDRCivECfIx";
 
         // Check that environment variables are set
         if (!webhookToken || !hmacSecret || !apiKey) {
