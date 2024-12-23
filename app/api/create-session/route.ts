@@ -3,8 +3,8 @@ import axios from 'axios';
 
 export async function POST() {
     try {
-        const projectId = "project_N4MZPcaksi47q27ABadDdG97DkZOnrL5vuc9VW6O7A";
-        const apiKey = "sandbox_Rz9rdzyLMLjDjpXgfxpzWoGDRCivECfIx";
+        const projectId = process.env.PROJECT_ID;
+        const apiKey = process.env.API_KEY;
         const redirectUrl = "https://clear-seven.vercel.app/results"
 
         if (!projectId || !apiKey || !redirectUrl) {
