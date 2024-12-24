@@ -5,7 +5,7 @@ export async function POST() {
     try {
         const projectId = process.env.PROJECT_ID;
         const apiKey = process.env.API_KEY;
-        const redirectUrl = "https://clear-main.vercel.app/results"
+        const redirectUrl = process.env.REDIRECT_URL;
 
         if (!projectId || !apiKey || !redirectUrl) {
             console.error('Missing environment variables');
