@@ -1,6 +1,14 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\app",
+    "\\app\\api",
+    "\\app\\api\\clear-webhook",
+    "\\app\\api\\create-session",
+    "\\app\\fonts",
+    "\\app\\results",
+    "\\public"
   ],
+  "SelectedNode": "\\app\\results\\page.tsx",
   "PreviewInSolutionExplorer": false
 }
