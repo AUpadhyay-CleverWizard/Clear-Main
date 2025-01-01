@@ -5,7 +5,7 @@ export async function POST() {
     try {
         const projectId = process.env.PROJECT_ID;
         const apiKey = process.env.API_KEY;
-        const redirectUrl = "https://orange-rock-029296a10.4.azurestaticapps.net/results";
+        const redirectUrl = "https://clear-main.vercel.app/results";
 
         if (!projectId || !apiKey || !redirectUrl) {
             console.error('Missing environment variables');

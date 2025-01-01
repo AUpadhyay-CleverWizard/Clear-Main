@@ -39,9 +39,6 @@ export default function Home() {
           <li>Provision access or information</li>
           <li>Instant on account creation</li>
           <li>Mitigate Fraud by ensuring customers are who they say they are</li>
-
-
-
         </ol>
 
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
