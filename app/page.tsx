@@ -7,7 +7,13 @@ export default function Home() {
 
   const handleVerification = async () => {
     setLoading(true);
-    try {
+      try {
+
+     const response2 = await fetch('/api/test-api', {
+              method: 'GET',
+     });
+          alert(response2);
+
       const response = await fetch('/api/create-session', {
         method: 'POST',
       });
