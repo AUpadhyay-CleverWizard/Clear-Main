@@ -1,6 +1,8 @@
 {
   "ExpandedNodes": [
     "",
+    "\\.github",
+    "\\.github\\workflows",
     "\\app",
     "\\app\\api",
     "\\app\\api\\clear-webhook",
@@ -9,6 +11,6 @@
     "\\app\\fonts",
     "\\app\\results"
   ],
-  "SelectedNode": "\\app\\api\\clear-webhook\\route.ts",
+  "SelectedNode": "\\app\\page.tsx",
   "PreviewInSolutionExplorer": false
 }
