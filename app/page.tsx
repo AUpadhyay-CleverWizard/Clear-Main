@@ -12,7 +12,7 @@ export default function Home() {
      const response2 = await fetch('/api/test-api', {
               method: 'GET',
      });
-          alert(JSON.stringify(response2));
+          alert(JSON.stringify(await response2.json()));
 
       const response = await fetch('/api/create-session', {
         method: 'POST',
