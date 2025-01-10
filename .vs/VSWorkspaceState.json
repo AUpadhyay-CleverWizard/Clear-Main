@@ -1,16 +1,11 @@
 {
   "ExpandedNodes": [
     "",
-    "\\.github",
-    "\\.github\\workflows",
     "\\app",
     "\\app\\api",
     "\\app\\api\\clear-webhook",
     "\\app\\api\\create-session",
-    "\\app\\api\\test-api",
-    "\\app\\fonts",
-    "\\app\\results"
+    "\\app\\api\\test-api"
   ],
-  "SelectedNode": "\\app\\page.tsx",
   "PreviewInSolutionExplorer": false
 }
