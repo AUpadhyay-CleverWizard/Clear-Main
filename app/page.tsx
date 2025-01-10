@@ -18,8 +18,10 @@ export default function Home() {
         method: 'POST',
       });
       const data = await response.json();
-      const clearme_url = process.env.VERIFICATION_CLEARME_URL;
-      alert(clearme_url);
+        const clearme_url = process.env.VERIFICATION_CLEARME_URL;
+        const projectId = process.env.PROJECT_ID;
+        alert(clearme_url);
+        alert(projectId);
       if (data.token || clearme_url) {
         // Redirect to the verification UI
         alert(clearme_url + `?token=${data.token}`);
