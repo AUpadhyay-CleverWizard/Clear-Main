@@ -19,8 +19,10 @@ export default function Home() {
       });
       const data = await response.json();
       const clearme_url = process.env.VERIFICATION_CLEARME_URL;
+      alert(clearme_url);
       if (data.token || clearme_url) {
         // Redirect to the verification UI
+        alert(clearme_url + `?token=${data.token}`);
         window.location.href = clearme_url+`?token=${data.token}`;
       } else {
         alert('Failed to start verification session');
