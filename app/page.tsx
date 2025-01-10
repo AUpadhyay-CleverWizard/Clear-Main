@@ -63,7 +63,7 @@ export default function Home() {
                     <div className="elementor-widget-container mb-6">
                         <h1 className="elementor-heading-title elementor-size-default">
                             <span className="heading-dark">
-                                Welcome to USClaims Verification Portal
+                                Welcome to USClaims Verification Portal v1.2
                             </span>
                         </h1>
                     </div>
