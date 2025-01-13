@@ -63,8 +63,8 @@ export default function Home() {
                         </h1>
                     </div>
                     <span className="subheading">
-                        Injury settlements take time. But you need cash now. That’s where
-                        USClaims comes in—we’ll provide the funds you need to cover expenses
+                        Injury settlements take time. But you need cash now. That's where
+                        USClaims comes in—we'll provide the funds you need to cover expenses
                         while your attorney fights for a fair settlement.
                     </span>
                 </div>
