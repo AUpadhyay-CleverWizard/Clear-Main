@@ -2,7 +2,10 @@
   "ExpandedNodes": [
     "",
     "\\app",
-    "\\public"
+    "\\app\\api",
+    "\\app\\api\\clear-webhook",
+    "\\app\\api\\create-session",
+    "\\app\\api\\test-api"
   ],
   "PreviewInSolutionExplorer": false
 }
