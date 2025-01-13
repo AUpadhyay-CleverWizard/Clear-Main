@@ -5,15 +5,14 @@ export async function POST() {
     try {
         const projectId = process.env.PROJECT_ID;
         const apiKey = process.env.API_KEY;
-        const redirectUrl = process.env.REDIRECT_BACK_URL;
-        const verification_session: string = process.env.VERIFICATION_SESSION_URL as string;
-        //const redirectUrl = "https://orange-rock-029296a10.4.azurestaticapps.net/results";
-        //const verification_session: string = "https://verified.clearme.com/v1/verification_sessions";
-        if (!projectId || !apiKey || !redirectUrl || !verification_session) {
+        const redirectUrl = "https://orange-rock-029296a10.4.azurestaticapps.net/results";
+
+        if (!projectId || !apiKey || !redirectUrl) {
             console.error('Missing environment variables');
             return NextResponse.json({ error: 'Server misconfiguration' }, { status: 500 });
         }
-        const response = await axios.post(verification_session, {
+
+        const response = await axios.post('https://verified.clearme.com/v1/verification_sessions', {
             project_id: projectId,
             redirect_url: redirectUrl
         }, {
@@ -22,6 +21,7 @@ export async function POST() {
                 'Content-Type': 'application/json'
             }
         });
+
         const verificationSession = response.data;
         return NextResponse.json({
             token: verificationSession.token,
