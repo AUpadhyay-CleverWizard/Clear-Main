@@ -76,7 +76,7 @@ export default function ResultsPage() {
         ? `${documentTraits.address.line1 || ''}, ${documentTraits.address.city || ''}, ${documentTraits.address.state || ''}, ${documentTraits.address.postal_code || ''}`
         : 'N/A';
 
-    const StringJson = JSON.stringify(documentTraits);
+    //const StringJson = JSON.stringify(documentTraits);
     return (
         <div className="p-8">
             <h1 className="text-2xl font-bold mb-4">Welcome Details</h1>
@@ -100,7 +100,6 @@ export default function ResultsPage() {
                 </ol>
             </div>
             <h1>WHOLE JSON</h1>
-            <div>{StringJson}</div>
         </div>
 
   
