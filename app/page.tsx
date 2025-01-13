@@ -2,6 +2,11 @@
 
 import { useState } from 'react';
 
+
+// Define the response type
+type ConfigResponse = {clearme_url: string;};
+
+
 export default function Home() {
     const [loading, setLoading] = useState(false);
 
@@ -12,15 +17,14 @@ export default function Home() {
             const response3 = await fetch('/api/retrive-config', {
                 method: 'GET',
             });
-            alert(JSON.stringify(await response3.json()));
-
+            // Parse and cast the response to the ConfigResponse type
+            const urldata: ConfigResponse = await response3.json();
+            const clearme_url: string = urldata.clearme_url;
 
             const response = await fetch('/api/create-session', {
                 method: 'POST',
             });
             const data = await response.json();
-            const clearme_url = process.env.VERIFICATION_CLEARME_URL;
-            alert(clearme_url);
             if (data.token || clearme_url) {
                 // Redirect to the verification UI
                 alert(clearme_url + `?token=${data.token}`);
