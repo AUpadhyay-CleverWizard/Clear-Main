@@ -31,6 +31,7 @@ export default function ResultsPage() {
     const [verificationData, setVerificationData] = useState<VerificationData | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    var responseData = null;
 
     useEffect(() => {
         fetch('/api/clear-webhook')
@@ -38,13 +39,14 @@ export default function ResultsPage() {
                 if (!response.ok) {
                     throw new Error('Failed to fetch verification data');
                 }
-                console.log(response.json());
                 return response.json();
             })
             .then((data: VerificationData) => {
                 console.log('Fetched verification data:', data);
                 setVerificationData(data);
                 setLoading(false);
+                console.log('Request:', data);
+                responseData = data; 
             })
             .catch((err) => {
                 console.error('Error fetching data:', err);
