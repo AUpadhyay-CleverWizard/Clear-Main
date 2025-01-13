@@ -38,9 +38,7 @@ export default function ResultsPage() {
                 if (!response.ok) {
                     throw new Error('Failed to fetch verification data');
                 }
-                console.log(
-                    JSON.stringify(response.json()),
-                );
+                console.log(response.json());
                 return response.json();
             })
             .then((data: VerificationData) => {
@@ -76,7 +74,6 @@ export default function ResultsPage() {
         ? `${documentTraits.address.line1 || ''}, ${documentTraits.address.city || ''}, ${documentTraits.address.state || ''}, ${documentTraits.address.postal_code || ''}`
         : 'N/A';
 
-    //const StringJson = JSON.stringify(documentTraits);
     return (
         <div className="p-8">
             <h1 className="text-2xl font-bold mb-4">Welcome Details</h1>
@@ -99,9 +96,6 @@ export default function ResultsPage() {
                     </li>
                 </ol>
             </div>
-            <h1>WHOLE JSON</h1>
         </div>
-
-  
     );
 }
