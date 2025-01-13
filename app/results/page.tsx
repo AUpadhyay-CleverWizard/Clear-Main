@@ -31,7 +31,7 @@ export default function ResultsPage() {
     const [verificationData, setVerificationData] = useState<VerificationData | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    var responseData = null;
+    let responseData = null;
 
     useEffect(() => {
         fetch('/api/clear-webhook')
