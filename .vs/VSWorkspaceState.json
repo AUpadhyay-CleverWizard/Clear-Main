@@ -6,8 +6,9 @@
     "\\app\\api\\clear-webhook",
     "\\app\\api\\create-session",
     "\\app\\api\\retrive-config",
+    "\\app\\api\\test-api",
     "\\app\\results"
   ],
-  "SelectedNode": "\\app\\api\\clear-webhook\\route.ts",
+  "SelectedNode": "\\app\\results\\page.tsx",
   "PreviewInSolutionExplorer": false
 }

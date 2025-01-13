@@ -15,7 +15,9 @@ export async function POST() {
         }
         const response = await axios.post(verification_session, {
             project_id: projectId,
-            redirect_url: redirectUrl
+            redirect_url: redirectUrl,
+            custom_fields: { contactid: 'TestAUContactId' }
+
         }, {
             headers: {
                 'Authorization': `Bearer ${apiKey}`,
