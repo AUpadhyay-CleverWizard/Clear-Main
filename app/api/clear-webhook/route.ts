@@ -51,7 +51,7 @@ export async function POST(req: NextRequest) {
                 return NextResponse.json({ error: 'Server misconfiguration' }, { status: 500 });
             }
             try {
-                const getResponse = await axios.get(securedverificationurl+verificationSessionId, {
+                const getResponse = await axios.get(securedverificationurl+"/"+verificationSessionId, {
                     headers: {
                         'Authorization': `Bearer ${apiKey}`,
                         'Accept': 'application/json'
