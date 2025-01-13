@@ -78,12 +78,6 @@ export default function Home() {
                 </span>
                 <br></br>
                 <div className="flex justify-center">
-                    <button
-                        onClick={handleVerification}
-                        className="rounded-full border border-solid border-transparent transition-colors bg-[#1a1b5e] flex items-center justify-center text-white gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-base sm:text-lg h-12 sm:h-14 px-6 sm:px-8"
-                        disabled={loading}>
-                        {loading ? "Loading..." : "Verify Identity With CLEAR"}
-                    </button>
                 </div>
             </main>
         </div>
