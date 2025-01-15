@@ -38,7 +38,7 @@ export default function Home() {
                 const data = await response.json();
                 if (data.token || clearme_url) {
                     alert(clearme_url + `?token=${data.token}`)
-                    //window.location.href = clearme_url + `?token=${data.token}`;
+                    window.location.href = clearme_url + `?token=${data.token}`;
                 } else {
                     window.location.href = "/404";
                 }
