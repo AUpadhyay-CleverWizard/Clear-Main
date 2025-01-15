@@ -12,6 +12,7 @@ type OperationData = {
 // Function to get the access token
 const getAccessToken = async (): Promise<string> => {
 
+    const tenantId = process.env.Dynamics_CE_AppRegistration_TenantId as string;
     const clientId = process.env.Dynamics_CE_AppRegistration_AppId as string;
     const clientSecret = process.env.Dynamics_CE_AppRegistration_Secret as string;
     const resource = process.env.Dynamics_CE_URL as string;
