@@ -49,7 +49,7 @@ export default function ResultsPage() {
                 if (data?.custom_fields?.dynid) {
                     const contactId = data.custom_fields.dynid;
                     const updateData = {
-                        usc_verifyclearverificationresults: JSON.stringify(data),
+                        usc_verifyclearverificationresults: "VERIFIED",
                     };
                     updateRecordInDynamics(contactId, updateData);
                 }
@@ -113,9 +113,6 @@ export default function ResultsPage() {
 }
 
 type UpdateData = {
-    firstname?: string;
-    lastname?: string;
-    emailaddress1?: string;
     [key: string]: string | undefined; // If you want to allow additional fields
 };
 
@@ -129,6 +126,7 @@ const updateRecordInDynamics = async (contactId: string, updateData: UpdateData)
         data: updateData,        // The update data received as a parameter
     };
     console.log(dataToUpdate);
+    console.log(updateData);
     try {
         const response = await axios.post('/api/dyn-ce-operations', dataToUpdate);
         console.log(response);
