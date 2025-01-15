@@ -130,6 +130,7 @@ const updateRecordInDynamics = async (updateData: UpdateData): Promise<{ success
     };
     try {
         const response = await axios.post('/api/dyn-ce-operations', dataToUpdate);
+        console.log(response);
         if (response.status === 200 || response.status === 204) {
             return { success: true, message: 'Record updated successfully' };
         } else {
