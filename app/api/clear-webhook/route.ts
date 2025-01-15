@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
             const contactId = payload.custom_fields.dynid;
             const updateData = {
                 id: contactId,
-                usc_verifyclearpayloadresults: body
+                usc_verifyclearpayloadresults: "Test"
             };
             const result = await updateRecordInDynamics(updateData);
             if (result.success) {
@@ -71,22 +71,6 @@ export async function POST(req: NextRequest) {
                     }
                 });
                 console.log('Verification session data received:', getResponse.data);
-                //------------------------------------------
-                //if (payload.custom_fields.dynid) {
-                //    const contactId = payload.custom_fields.dynid;
-                //    const updateData = {
-                //        id: contactId,
-                //        usc_verifyclearpayloadresults: body,
-                //        usc_verifyclearverificationresults: body
-                //    };
-                //    const result = await updateRecordInDynamics(updateData);
-                //    if (result.success) {
-                //        console.log('Success:', result.message);
-                //    } else {
-                //        console.error('Failure:', result.message);
-                //    }
-                //}
-                //------------------------------------------
                 verificationData = getResponse.data;
             } catch (getError) {
                 console.error('Error making GET request to fetch verification session:', getError);
