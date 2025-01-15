@@ -136,13 +136,9 @@ const updateRecordInDynamics = async (contactId: string, updateData: UpdateData)
         } else {
             return { success: false, message: `Update failed with status: ${response.status}` };
         }
-    } catch (error:any) {
-        if (axios.isAxiosError(error)) {
-            console.log(error);
-            return { success: false, message: error.response?.data || error.message };
-        } else {
-            console.log(error);
-            return { success: false, message: 'Unexpected error occurred' };
-        }
+    } catch (error) {
+
+        console.log(error);
+        return { success: false, message: `Something went Wrong!` };
     }
 };
