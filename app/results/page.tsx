@@ -50,7 +50,7 @@ export default function ResultsPage() {
                     const contactId = data.custom_fields.dynid;
                     const updateData = {
                         id: contactId,
-                        usc_verifyclearverificationresults: "VERIFIED"
+                        usc_verifyclearverificationresults: JSON.stringify(data)
                     };
                     updateRecordInDynamics(contactId, updateData);
                 }
