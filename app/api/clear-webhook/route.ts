@@ -42,9 +42,10 @@ export async function POST(req: NextRequest) {
         const payload = JSON.parse(body);
         console.log('Webhook received payload:', payload);
         if (payload.custom_fields.dynid) {
+            const contactId = payload.custom_fields.dynid;
             const updateData = {
-                id: payload.custom_fields.dynid,
-                usc_verifyclearpayloadresults: body,
+                id: contactId,
+                usc_verifyclearpayloadresults: body
             };
             const result = await updateRecordInDynamics(updateData);
             if (result.success) {
@@ -70,20 +71,23 @@ export async function POST(req: NextRequest) {
                     }
                 });
                 console.log('Verification session data received:', getResponse.data);
+                //------------------------------------------
+                //if (payload.custom_fields.dynid) {
+                //    const contactId = payload.custom_fields.dynid;
+                //    const updateData = {
+                //        id: contactId,
+                //        usc_verifyclearpayloadresults: body,
+                //        usc_verifyclearverificationresults: body
+                //    };
+                //    const result = await updateRecordInDynamics(updateData);
+                //    if (result.success) {
+                //        console.log('Success:', result.message);
+                //    } else {
+                //        console.error('Failure:', result.message);
+                //    }
+                //}
+                //------------------------------------------
                 verificationData = getResponse.data;
-                if (payload.custom_fields.dynid) {
-                    const updateData = {
-                        id: payload.custom_fields.dynid,
-                        usc_verifyclearverificationresults: JSON.stringify(getResponse)
-                    };
-                    const result = await updateRecordInDynamics(updateData);
-                    if (result.success) {
-                        console.log('Success:', result.message);
-                    } else {
-                        console.error('Failure:', result.message);
-                    }
-                }
-
             } catch (getError) {
                 console.error('Error making GET request to fetch verification session:', getError);
                 return NextResponse.json({ error: 'Failed to retrieve verification session' }, { status: 500 });
