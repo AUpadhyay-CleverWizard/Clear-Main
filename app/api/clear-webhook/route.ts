@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
                 id: contactId,
                 usc_verifyclearpayloadresults: "Test1234"
             };
-            const response = await updateRecordInDynamics(updateData);
+            await updateRecordInDynamics(updateData);
             //return NextResponse.json({ response }, { status: 200 });
         //}
         if (payload.event_type === 'event_verification_session_completed_v1') {
