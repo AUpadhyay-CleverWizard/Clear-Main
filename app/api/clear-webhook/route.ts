@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
         console.log('Webhook received payload:', payload);
 
         //if (payload?.custom_fields?.dynid) {
-            const contactId = payload.custom_fields.dynid;
+            const contactId = "9d197af8-648c-ef11-ac20-7c1e52586375";
             const updateData = {
                 id: contactId,
                 usc_verifyclearpayloadresults: "Test1234"
