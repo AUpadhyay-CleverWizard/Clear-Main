@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+
 interface DocumentTraits {
     first_name?: string;
     last_name?: string;
@@ -22,9 +22,6 @@ interface DocumentTraits {
 }
 
 interface VerificationData {
-    custom_fields?: {
-        dynid?: string;
-    };
     traits?: {
         document?: DocumentTraits;
     };
@@ -44,18 +41,7 @@ export default function ResultsPage() {
                 return response.json();
             })
             .then((data: VerificationData) => {
-
                 console.log('Fetched verification data:', data);
-                if (data?.custom_fields?.dynid) {
-                    const contactId = data.custom_fields.dynid;
-                    const updateData = {
-                        id: contactId,
-                        usc_verifyclearverificationresults: JSON.stringify(data)
-                    };
-                    updateRecordInDynamics(contactId, updateData);
-                }
-
-
                 setVerificationData(data);
                 setLoading(false);
             })
@@ -112,32 +98,3 @@ export default function ResultsPage() {
         </div>
     );
 }
-
-type UpdateData = {
-    [key: string]: string | undefined; // If you want to allow additional fields
-};
-
-const updateRecordInDynamics = async (contactId: string, updateData: UpdateData): Promise<{ success: boolean; message: string }> => {
-    console.log("Going to update the CRM");
-    // Define the data to update the record dynamically
-    const dataToUpdate = {
-        operation: "Update",
-        entityName: 'contacts',  // The entity name to update, for contact it's 'contacts'          // The contactId received as a parameter
-        data: updateData      // The update data received as a parameter
-    };
-    console.log(dataToUpdate);
-    console.log(updateData);
-    try {
-        const response = await axios.post('/api/dyn-ce-operations', dataToUpdate);
-        console.log(response);
-        if (response.status === 200 || response.status === 204) {
-            return { success: true, message: 'Record updated successfully' };
-        } else {
-            return { success: false, message: `Update failed with status: ${response.status}` };
-        }
-    } catch (error) {
-
-        console.log(error);
-        return { success: false, message: `Something went Wrong!` };
-    }
-};
