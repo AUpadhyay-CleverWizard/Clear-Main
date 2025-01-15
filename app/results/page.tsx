@@ -44,7 +44,6 @@ export default function ResultsPage() {
                 console.log('Fetched verification data:', data);
                 setVerificationData(data);
                 setLoading(false);
-                console.log('Request:', data);
             })
             .catch((err) => {
                 console.error('Error fetching data:', err);

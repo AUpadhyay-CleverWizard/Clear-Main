@@ -1,36 +1,57 @@
 "use client"
-
 import { useState } from 'react';
+import Image from 'next/image';
+import { useSearchParams } from "next/navigation";
+// Define the response type
 type ConfigResponse = { clearme_url: string; };
 export default function Home() {
+    const searchParams = useSearchParams();  // Get query parameters
+    const id = searchParams.get("id");  // Get the `id` query parameter from URL 
+    if (!id) { window.location.href = "/404"; }
     const [loading, setLoading] = useState(false);
     const handleVerification = async () => {
         setLoading(true);
         try {
-            const response3 = await fetch('/api/retrive-config', {
-                method: 'GET',
-            });
-            // Parse and cast the response to the ConfigResponse type
+            const response3 = await fetch('/api/retrive-config', { method: 'GET', });
             const urldata: ConfigResponse = await response3.json();
             const clearme_url: string = urldata.clearme_url;
-            const response = await fetch('/api/create-session', {
+            const reqBody = {
+                operation: "Retrieve",
+                entityName: 'contacts',
+                data: {
+                    id: id,
+                    fields: ["firstname", "lastname", "usc_sendverifyclearverificationlink"]
+                },  // The contactId received as a parameter
+            };
+            const retrieveContact = await fetch('/api/dyn-ce-operations', {
                 method: 'POST',
+                headers: { 'Content-Type': 'application/json' }, // Indicates that you're sending JSON data}
+                body: JSON.stringify(reqBody)
             });
-            const data = await response.json();
-            if (data.token || clearme_url) {
-                // Redirect to the verification UI
-                window.location.href = clearme_url + `?token=${data.token}`;
+            const contactData = await retrieveContact.json();
+            if (contactData && contactData.usc_sendverifyclearverificationlink) {
+                const response = await fetch('/api/create-session', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }, // Indicates that you're sending JSON data}
+                    body: JSON.stringify({ dynid: id })
+                });
+                const data = await response.json();
+                if (data.token || clearme_url) {
+                    alert(clearme_url + `?token=${data.token}`)
+                    //window.location.href = clearme_url + `?token=${data.token}`;
+                } else {
+                    window.location.href = "/404";
+                }
             } else {
-                alert('Failed to start verification session');
+                alert("The link has already been used or you are not authorise to access this.");
             }
         } catch (error) {
             console.error('Error starting verification:', error);
-            alert('An error occurred');
+            alert('Error starting verification');
         } finally {
             setLoading(false);
         }
     };
-
     return (
         <div
             className="flex flex-col items-center justify-center min-h-screen bg-gray-100 px-4 sm:px-6 lg:px-8 relative"
@@ -44,21 +65,23 @@ export default function Home() {
             <main
                 className="text-center max-w-2xl p-6 sm:p-8 rounded-lg shadow-md flex flex-col items-center relative z-10"
                 style={{
-                    backgroundColor: 'rgba(255, 255, 255, 0.85) !important', /* White with 85% opacity */
+                    backgroundColor: 'rgba(255, 255, 255, 0.80)'
                 }}
             >
                 <header className="mb-4">
-                    <img
+                    <Image
                         src="/logo-desktop.svg"
                         alt="CLEAR Logo"
                         className="h-16 sm:h-20"
+                        width={500}
+                        height={500}
                     />
                 </header>
                 <div className="mb-6">
                     <div className="elementor-widget-container mb-6">
                         <h1 className="elementor-heading-title elementor-size-default">
                             <span className="heading-dark">
-                                Welcome to USClaims Verification Portal V.123
+                                Welcome to USClaims Verification Portal
                             </span>
                         </h1>
                     </div>

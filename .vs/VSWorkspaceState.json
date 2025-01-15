@@ -1,14 +1,7 @@
 {
   "ExpandedNodes": [
-    "",
-    "\\app",
-    "\\app\\api",
-    "\\app\\api\\clear-webhook",
-    "\\app\\api\\create-session",
-    "\\app\\api\\retrive-config",
-    "\\app\\api\\test-api",
-    "\\app\\results"
+    ""
   ],
-  "SelectedNode": "\\app\\results\\page.tsx",
+  "SelectedNode": "\\D:\\OneDrive - XRM Labs\\Cipher Dyn\\ClearMain\\Clear-Main",
   "PreviewInSolutionExplorer": false
 }
