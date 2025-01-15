@@ -49,9 +49,9 @@ export async function POST(req: NextRequest) {
             };
             const result = await updateRecordInDynamics(updateData);
             if (result.success) {
-                console.log('Success:', result.message);
+                return NextResponse.json({ error: 'SUCCESS' + result.message }, { status: 200 });
             } else {
-                console.error('Failure:', result.message);
+                return NextResponse.json({ error: 'ERROR' + result.message }, { status: 401 });
             }
         }
         if (payload.event_type === 'event_verification_session_completed_v1') {
