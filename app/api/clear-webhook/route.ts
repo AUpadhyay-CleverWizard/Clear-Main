@@ -95,12 +95,12 @@ export async function GET() {
     }
 }
 
-type UpdateData = {
-    firstname?: string;
-    lastname?: string;
-    emailaddress1?: string;
-    [key: string]: string | undefined; // If you want to allow additional fields
-};
+//type UpdateData = {
+//    firstname?: string;
+//    lastname?: string;
+//    emailaddress1?: string;
+//    [key: string]: string | undefined; // If you want to allow additional fields
+//};
 
 
 //const updateRecordInDynamics = async (contactId: string, updateData: UpdateData): Promise<{ success: boolean; message: string }> => {
