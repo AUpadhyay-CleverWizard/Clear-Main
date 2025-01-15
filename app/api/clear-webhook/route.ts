@@ -102,8 +102,9 @@ const updateRecordInDynamics = async (updateData: UpdateData): Promise<{ success
         entityName: 'contacts',  // The entity name to update, for contact it's 'contacts'
         data: updateData        // The update data received as a parameter
     };
+    const SITE_URL = process.env.SITE_URL;
     try {
-        const response = await axios.post('/api/dyn-ce-operations', dataToUpdate);
+        const response = await axios.post(SITE_URL+'/api/dyn-ce-operations', dataToUpdate);
         console.log(response);
         if (response.status === 200 || response.status === 204) {
             return { success: true, message: 'Record updated successfully' };
