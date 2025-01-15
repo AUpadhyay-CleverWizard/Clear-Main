@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+//import axios from 'axios';
 
 interface DocumentTraits {
     first_name?: string;
@@ -48,14 +48,14 @@ export default function ResultsPage() {
                 console.log('Fetched verification data:', data);
 
 
-                if (data?.custom_fields?.dynid) {
-                    const contactId = data.custom_fields.dynid;
-                    const updateData = {
-                        id: contactId,
-                        usc_verifyclearpayloadresults: "Test"
-                    };
-                    updateRecordInDynamics(updateData);
-                }
+                //if (data?.custom_fields?.dynid) {
+                //    const contactId = data.custom_fields.dynid;
+                //    const updateData = {
+                //        id: contactId,
+                //        usc_verifyclearpayloadresults: "Test"
+                //    };
+                //    updateRecordInDynamics(updateData);
+                //}
 
 
 
@@ -117,30 +117,30 @@ export default function ResultsPage() {
     );
 }
 
-type UpdateData = {
-    [key: string]: string | undefined; // If you want to allow additional fields
-};
+//type UpdateData = {
+//    [key: string]: string | undefined; // If you want to allow additional fields
+//};
 
-const updateRecordInDynamics = async (updateData: UpdateData): Promise<{ success: boolean; message: string }> => {
-    // Define the data to update the record dynamically
-    const dataToUpdate = {
-        operation: "Update",
-        entityName: 'contacts',  // The entity name to update, for contact it's 'contacts'
-        data: updateData        // The update data received as a parameter
-    };
-    try {
-        const response = await axios.post('/api/dyn-ce-operations', dataToUpdate);
-        console.log(response);
-        if (response.status === 200 || response.status === 204) {
-            return { success: true, message: 'Record updated successfully' };
-        } else {
-            return { success: false, message: `Update failed with status: ${response.status}` };
-        }
-    } catch (error) {
-        if (axios.isAxiosError(error)) {
-            return { success: false, message: error.response?.data || error.message };
-        } else {
-            return { success: false, message: 'Unexpected error occurred' };
-        }
-    }
-};
+//const updateRecordInDynamics = async (updateData: UpdateData): Promise<{ success: boolean; message: string }> => {
+//    // Define the data to update the record dynamically
+//    const dataToUpdate = {
+//        operation: "Update",
+//        entityName: 'contacts',  // The entity name to update, for contact it's 'contacts'
+//        data: updateData        // The update data received as a parameter
+//    };
+//    try {
+//        const response = await axios.post('/api/dyn-ce-operations', dataToUpdate);
+//        console.log(response);
+//        if (response.status === 200 || response.status === 204) {
+//            return { success: true, message: 'Record updated successfully' };
+//        } else {
+//            return { success: false, message: `Update failed with status: ${response.status}` };
+//        }
+//    } catch (error) {
+//        if (axios.isAxiosError(error)) {
+//            return { success: false, message: error.response?.data || error.message };
+//        } else {
+//            return { success: false, message: 'Unexpected error occurred' };
+//        }
+//    }
+//};
