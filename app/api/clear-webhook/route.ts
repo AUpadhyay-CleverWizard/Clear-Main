@@ -51,6 +51,7 @@ export async function POST(req: NextRequest) {
             const response = await updateRecordInDynamics(updateData);
             return NextResponse.json({ response }, { status: 200 });
         }
+        return NextResponse.json({ payload }, { status: 200 });
         if (payload.event_type === 'event_verification_session_completed_v1') {
             const verificationSessionId = payload.data.verification_session_id;
             console.log(`Verification session completed for ID: ${verificationSessionId}`);
