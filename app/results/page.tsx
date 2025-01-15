@@ -49,7 +49,8 @@ export default function ResultsPage() {
                 if (data?.custom_fields?.dynid) {
                     const contactId = data.custom_fields.dynid;
                     const updateData = {
-                        usc_verifyclearverificationresults: "VERIFIED",
+                        id: contactId,
+                        usc_verifyclearverificationresults: "VERIFIED"
                     };
                     updateRecordInDynamics(contactId, updateData);
                 }
@@ -121,9 +122,8 @@ const updateRecordInDynamics = async (contactId: string, updateData: UpdateData)
     // Define the data to update the record dynamically
     const dataToUpdate = {
         operation: "Update",
-        entityName: 'contacts',  // The entity name to update, for contact it's 'contacts'
-        id: contactId,           // The contactId received as a parameter
-        data: updateData,        // The update data received as a parameter
+        entityName: 'contacts',  // The entity name to update, for contact it's 'contacts'          // The contactId received as a parameter
+        data: updateData      // The update data received as a parameter
     };
     console.log(dataToUpdate);
     console.log(updateData);
