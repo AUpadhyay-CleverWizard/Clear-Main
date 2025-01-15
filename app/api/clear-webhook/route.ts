@@ -103,7 +103,7 @@ const updateRecordInDynamics = async (updateData: UpdateData): Promise<{ success
         data: updateData        // The update data received as a parameter
     };
     try {
-        const response = await axios.post('https://orange-rock-029296a10.4.azurestaticapps.net/api/dyn-ce-operations', dataToUpdate);
+        const response = await axios.post('/api/dyn-ce-operations', dataToUpdate);
         console.log(response);
         if (response.status === 200 || response.status === 204) {
             return { success: true, message: 'Record updated successfully' };
