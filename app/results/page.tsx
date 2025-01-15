@@ -128,6 +128,7 @@ const updateRecordInDynamics = async (contactId: string, updateData: UpdateData)
         id: contactId,           // The contactId received as a parameter
         data: updateData,        // The update data received as a parameter
     };
+    console.log(dataToUpdate);
     try {
         const response = await axios.post('/api/dyn-ce-operations', dataToUpdate);
         console.log(response);
