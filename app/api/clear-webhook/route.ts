@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createHmac } from 'crypto';
 import axios from 'axios';
 let verificationData: Record<string, unknown> | null = null;
+let payloadData: string;
 export async function POST(req: NextRequest) {
     try {
         // Load environment variables
@@ -40,17 +41,8 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: 'Unauthorized request: Invalid HMAC signature' }, { status: 401 });
         }
         const payload = JSON.parse(body);
+        payloadData = body;
         console.log('Webhook received payload:', payload);
-
-        //if (payload?.custom_fields?.dynid) {
-        const contactId = "9d197af8-648c-ef11-ac20-7c1e52586375";
-        const updateData = {
-            id: contactId,
-            usc_verifyclearpayloadresults: body
-        };
-        await updateRecordInDynamics(updateData);
-        //return NextResponse.json({ response }, { status: 200 });
-        //}
         if (payload.event_type === 'event_verification_session_completed_v1') {
             const verificationSessionId = payload.data.verification_session_id;
             console.log(`Verification session completed for ID: ${verificationSessionId}`);
@@ -69,14 +61,20 @@ export async function POST(req: NextRequest) {
                 });
                 console.log('Verification session data received:', getResponse.data);
                 verificationData = getResponse.data;
-
-                const contactId = "9d197af8-648c-ef11-ac20-7c1e52586375";
-                const updateData = {
-                    id: contactId,
-                    usc_verifyclearverificationresults: JSON.stringify(verificationData)
-                };
-                await updateRecordInDynamics(updateData);
-
+                const contactId = verificationData?.custom_fields?.dynid ?? null;
+                if (contactId) {
+                    const updateData = {
+                        id: contactId,
+                        usc_verifyclearverificationresults: JSON.stringify(verificationData),
+                        usc_verifyclearpayloadresults: payloadData
+                    };
+                    const response = await updateRecordInDynamics(updateData);
+                    if (!response.success) { return NextResponse.json({ error: 'ERROR in updating backend' }, { status: 500 }); }
+                }
+                else {
+                    console.error('DYNId Id is missing in the verificaiton results');
+                    return NextResponse.json({ error: 'DYNId Id is missing in the verificaiton results' }, { status: 500 });
+                }
             } catch (getError) {
                 console.error('Error making GET request to fetch verification session:', getError);
                 return NextResponse.json({ error: 'Failed to retrieve verification session' }, { status: 500 });
