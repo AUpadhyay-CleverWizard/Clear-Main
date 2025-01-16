@@ -43,13 +43,13 @@ export async function POST(req: NextRequest) {
         console.log('Webhook received payload:', payload);
 
         //if (payload?.custom_fields?.dynid) {
-            const contactId = "9d197af8-648c-ef11-ac20-7c1e52586375";
-            const updateData = {
-                id: contactId,
-                usc_verifyclearpayloadresults: body
-            };
-            await updateRecordInDynamics(updateData);
-            //return NextResponse.json({ response }, { status: 200 });
+        const contactId = "9d197af8-648c-ef11-ac20-7c1e52586375";
+        const updateData = {
+            id: contactId,
+            usc_verifyclearpayloadresults: body
+        };
+        await updateRecordInDynamics(updateData);
+        //return NextResponse.json({ response }, { status: 200 });
         //}
         if (payload.event_type === 'event_verification_session_completed_v1') {
             const verificationSessionId = payload.data.verification_session_id;
@@ -69,6 +69,14 @@ export async function POST(req: NextRequest) {
                 });
                 console.log('Verification session data received:', getResponse.data);
                 verificationData = getResponse.data;
+
+                const contactId = "9d197af8-648c-ef11-ac20-7c1e52586375";
+                const updateData = {
+                    id: contactId,
+                    usc_verifyclearpayloadresults: JSON.stringify(verificationData)
+                };
+                await updateRecordInDynamics(updateData);
+
             } catch (getError) {
                 console.error('Error making GET request to fetch verification session:', getError);
                 return NextResponse.json({ error: 'Failed to retrieve verification session' }, { status: 500 });
@@ -103,8 +111,9 @@ const updateRecordInDynamics = async (updateData: UpdateData): Promise<{ success
         data: updateData        // The update data received as a parameter
     };
     const SITE_URL = process.env.SITE_URL;
+    if (!SITE_URL) { return { success: false, message: 'SITE_URL Configuration is missing' }; }
     try {
-        const response = await axios.post(SITE_URL+'/api/dyn-ce-operations', dataToUpdate);
+        const response = await axios.post(SITE_URL + '/api/dyn-ce-operations', dataToUpdate);
         console.log(response);
         if (response.status === 200 || response.status === 204) {
             return { success: true, message: 'Record updated successfully' };

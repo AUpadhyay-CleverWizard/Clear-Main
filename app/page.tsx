@@ -20,7 +20,7 @@ export default function Home() {
                 entityName: 'contacts',
                 data: {
                     id: id,
-                    fields: ["firstname", "lastname", "usc_sendverifyclearverificationlink"]
+                    fields: ["firstname", "lastname", "usc_enableclearverificationlink"]
                 },  // The contactId received as a parameter
             };
             const retrieveContact = await fetch('/api/dyn-ce-operations', {
@@ -29,7 +29,7 @@ export default function Home() {
                 body: JSON.stringify(reqBody)
             });
             const contactData = await retrieveContact.json();
-            if (contactData && contactData.usc_sendverifyclearverificationlink) {
+            if (contactData && contactData.usc_enableclearverificationlink) {
                 const response = await fetch('/api/create-session', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' }, // Indicates that you're sending JSON data}
