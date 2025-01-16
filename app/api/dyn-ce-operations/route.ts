@@ -55,7 +55,7 @@ const performOperation = async (
         let fieldString = "";
         // Check if fields are defined in the request data
         //const fields = data.fields ? data.fields : undefined;
-        const fields = ["firstname", "lastname", "usc_sendverifyclearverificationlink"];
+        const fields = ["firstname", "lastname", "usc_enableclearverificationlink"];
         const url = `${baseUrl}`;
 
         // If fields are defined, include them in the query
