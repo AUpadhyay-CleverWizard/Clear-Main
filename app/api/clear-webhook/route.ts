@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createHmac } from 'crypto';
 import axios from 'axios';
 let verificationData: Record<string, unknown> | null = null;
-let verificationDataCRM: Record<string, unknown> | null = null;
 let payloadData: string;
 interface CustomFields {
     dynid?: string | null;
