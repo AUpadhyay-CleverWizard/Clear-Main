@@ -2,7 +2,16 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createHmac } from 'crypto';
 import axios from 'axios';
 let verificationData: Record<string, unknown> | null = null;
+let verificationDataCRM: Record<string, unknown> | null = null;
 let payloadData: string;
+interface CustomFields {
+    dynid?: string | null;
+}
+// Define the interface for verificationData
+interface VerificationData {
+    custom_fields?: CustomFields;
+    // Add other properties as needed
+}
 export async function POST(req: NextRequest) {
     try {
         // Load environment variables
@@ -61,7 +70,8 @@ export async function POST(req: NextRequest) {
                 });
                 console.log('Verification session data received:', getResponse.data);
                 verificationData = getResponse.data;
-                const contactId = verificationData?.custom_fields?.dynid ?? null;
+                const verificationDataCRM: VerificationData = getResponse.data;
+                const contactId = verificationDataCRM?.custom_fields?.dynid ?? null;
                 if (contactId) {
                     const updateData = {
                         id: contactId,
