@@ -73,7 +73,7 @@ export async function POST(req: NextRequest) {
                 const contactId = "9d197af8-648c-ef11-ac20-7c1e52586375";
                 const updateData = {
                     id: contactId,
-                    usc_verifyclearpayloadresults: JSON.stringify(verificationData)
+                    usc_verifyclearverificationresults: JSON.stringify(verificationData)
                 };
                 await updateRecordInDynamics(updateData);
 

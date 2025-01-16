@@ -20,7 +20,7 @@ export default function Home() {
                 entityName: 'contacts',
                 data: {
                     id: id,
-                    fields: ["firstname", "lastname", "usc_enableclearverificationlink"]
+                    fields: ["usc_enableclearverificationlink"]
                 },  // The contactId received as a parameter
             };
             const retrieveContact = await fetch('/api/dyn-ce-operations', {
