@@ -31,7 +31,7 @@ const performOperation = async (
     accessToken: string,
     data: OperationData
 ) => {
-    const resource = "https://uscqa.api.crm.dynamics.com";
+    const resource = process.env.Dynamics_CE_URL as string;;
     const baseUrl = `${resource}/api/data/v9.2/${entityName}`;
     const headers = {
         Authorization: `Bearer ${accessToken}`,

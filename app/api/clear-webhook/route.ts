@@ -39,19 +39,19 @@ export async function POST(req: NextRequest) {
                 verificationData = getResponse.data;
                 const verificationDataCRM: VerificationData = getResponse.data;
                 const contactId = verificationDataCRM?.custom_fields?.dynid ?? null;
-                const verificationToken = verificationData?.token;
-                const verificationId = verificationData?.id;
+                const verificationToken = verificationData?.token as string;
+                const verificationId = verificationData?.id as string;
                 if (contactId && verificationId && verificationToken) {
-
                     const retriveDynSessionRecordQuery = {
                         operation: "RetrieveMultiple",
                         entityName: "usc_clearverificationsessionses",
                         data: {
-                            query: "$filter=usc_name eq 'verify_QgNWAKw2eaTHHLmfkTeAmXXSMqYdhKXR' and  usc_verificationdatatoken eq 'verify_token_AxaS9YnLaF9iJ1nv8CkObgVM4rS4dHPY' and  _usc_clearverifiedperson_value eq 9d197af8-648c-ef11-ac20-7c1e52586375&$orderby=createdon desc&$top=1",
+                            query: "$filter=usc_name eq '" + verificationId + "' and  usc_verificationdatatoken eq '" + verificationToken + "' and  _usc_clearverifiedperson_value eq " + contactId + "&$orderby=createdon desc&$top=1",
                             fields: []
                         }
                     }
-                    const retriveDynSessionRecordRequest = await fetch('/api/dyn-ce-operations', {
+                    const SITE_URL = process.env.SITE_URL;
+                    const retriveDynSessionRecordRequest = await fetch(SITE_URL + '/api/dyn-ce-operations', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' }, // Indicates that you're sending JSON data}
                         body: JSON.stringify(retriveDynSessionRecordQuery)

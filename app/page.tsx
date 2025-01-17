@@ -57,27 +57,7 @@ export default function Home() {
                     body: JSON.stringify({ dynid: id })
                 });
                 const data = await response.json();
-                if (data.token || clearme_url) {
-                    const createreqBody = {
-                        operation: "Create",
-                        entityName: 'usc_clearverificationsessionses',
-                        data: {
-                            "usc_name": data.id,
-                            "usc_verificationdatatoken": data.token as string,
-                            "usc_clearverificationsessioncreatedon": new Date().toISOString(),
-                            "usc_ClearVerifiedPerson@odata.bind": `/contacts(${id})`
-                        },
-                    };
-                    const dynVerifictionSession = await fetch('/api/dyn-ce-operations', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' }, // Indicates that you're sending JSON data}
-                        body: JSON.stringify(createreqBody)
-                    });
-                    if (!dynVerifictionSession.ok) { alert("Something Went Wrong!"); window.location.href = "/404"; }
-                    const dynVerifictionData = await dynVerifictionSession.json();
-                    if (dynVerifictionData) { window.location.href = clearme_url + `?token=${data.token}`; }
-                    else { alert("Something Went Wrong!"); window.location.href = "/404"; }
-                }
+                if (data.token || clearme_url) { window.location.href = clearme_url + `?token=${data.token}`; }
                 else { window.location.href = "/404"; }
             }
             else { alert("The link has already been used or you are not authorise to access this."); }
@@ -85,7 +65,6 @@ export default function Home() {
         catch (error) { alert('Error starting verification'); console.log(error); }
         finally { setLoading(false); }
     };
-
     return (
         <div
             className="flex flex-col items-center justify-center min-h-screen bg-gray-100 px-4 sm:px-6 lg:px-8 relative"
