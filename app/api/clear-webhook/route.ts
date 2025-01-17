@@ -3,8 +3,6 @@ import { createHmac } from 'crypto';
 import axios from 'axios';
 let verificationData: Record<string, unknown> | null = null;
 let payloadData: string;
-let datalogger: Record<string, unknown> | null = null;
-let datalogger1: Response;
 interface CustomFields { dynid?: string | null; }
 interface VerificationData { custom_fields?: CustomFields; }
 export async function POST(req: NextRequest) {
@@ -27,7 +25,6 @@ export async function POST(req: NextRequest) {
         if (calculatedSignature !== signatureFromHeader) { return NextResponse.json({ error: 'Unauthorized request: Invalid HMAC signature' }, { status: 401 }); }
         const payload = JSON.parse(body);
         payloadData = body;
-
         if (payload.event_type === 'event_verification_session_completed_v1') {
             const verificationSessionId = payload.data.verification_session_id;
             const securedverificationurl = process.env.SECURED_VERIFICATION_SESSION_URL;
@@ -45,12 +42,11 @@ export async function POST(req: NextRequest) {
                 const verificationToken = verificationData?.token as string;
                 const verificationId = verificationData?.id as string;
                 if (contactId && verificationId && verificationToken) {
-                    const Query = "$filter=usc_name eq '" + verificationId + "' and  usc_verificationdatatoken eq '" + verificationToken + "' and  _usc_clearverifiedperson_value eq " + contactId + "&$orderby=createdon desc&$top=1";
                     const retriveDynSessionRecordQuery = {
                         operation: "RetrieveMultiple",
                         entityName: "usc_clearverificationsessionses",
                         data: {
-                            query: Query,
+                            query: "$filter=usc_name eq '" + verificationId + "' and  usc_verificationdatatoken eq '" + verificationToken + "' and  _usc_clearverifiedperson_value eq " + contactId + "&$orderby=createdon desc&$top=1",
                             fields: []
                         }
                     }
@@ -60,11 +56,8 @@ export async function POST(req: NextRequest) {
                         headers: { 'Content-Type': 'application/json' }, // Indicates that you're sending JSON data}
                         body: JSON.stringify(retriveDynSessionRecordQuery)
                     });
-                    datalogger1 = retriveDynSessionRecordRequest;
-                    if (!retriveDynSessionRecordRequest.ok) { return NextResponse.json({ error: 'ERROR in retriving' }, { status: 500 }); }
+                    if (!retriveDynSessionRecordRequest.ok) { return NextResponse.json({ error: 'ERROR in updating backend' }, { status: 500 }); }
                     const retriveDynSessionRecordData = await retriveDynSessionRecordRequest.json();
-                    datalogger = retriveDynSessionRecordData;
-
                     if (retriveDynSessionRecordData && retriveDynSessionRecordData.value) {
                         const currentDynVerificationRecord = retriveDynSessionRecordData.value[0];
                         if (currentDynVerificationRecord) {
@@ -97,8 +90,7 @@ export async function GET() {
     console.log('GET request received on /api/clear-webhook');
     if (verificationData) {
         console.log('Returning verification data:', verificationData);
-        //return NextResponse.json(verificationData);
-        return NextResponse.json({ datalogger, datalogger1 }, { status:500 });
+        return NextResponse.json(verificationData);
     } else {
         console.log('No verification data available');
         return NextResponse.json({ message: 'No data available' }, { status: 404 });

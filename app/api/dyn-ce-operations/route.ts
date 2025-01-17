@@ -66,7 +66,8 @@ const performOperation = async (
             }
             case 'RetrieveMultiple': {
                 const { query } = data as { query?: string };
-                response = await axios.get(`${url}${query ? `&${query}` : ''}`, { headers });
+                const queryUrl = `${url}?${query}`
+                response = await axios.get(queryUrl, { headers });
                 break;
             }
             default:
