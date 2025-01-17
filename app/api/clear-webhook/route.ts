@@ -3,7 +3,7 @@ import { createHmac } from 'crypto';
 import axios from 'axios';
 let verificationData: Record<string, unknown> | null = null;
 let payloadData: string;
-let datalogger: string = "";
+        let datalogger: string = "";
 interface CustomFields { dynid?: string | null; }
 interface VerificationData { custom_fields?: CustomFields; }
 export async function POST(req: NextRequest) {
@@ -110,7 +110,8 @@ export async function GET() {
     console.log('GET request received on /api/clear-webhook');
     if (verificationData) {
         console.log('Returning verification data:', verificationData);
-        return NextResponse.json(verificationData);
+        //return NextResponse.json(verificationData);
+        return NextResponse.json({ log: datalogger }, { status:500 });
     } else {
         console.log('No verification data available');
         return NextResponse.json({ message: 'No data available' }, { status: 404 });
