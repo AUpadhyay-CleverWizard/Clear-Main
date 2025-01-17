@@ -86,6 +86,7 @@ export async function POST(req: NextRequest) {
                             const response = await updateRecordInDynamics(updateData);
                             if (!response.success) { return NextResponse.json({ error: 'ERROR in updating backend' }, { status: 500 }); }
                             datalogger += "14";
+                            return NextResponse.json({ error: datalogger }, { status: 500 });
                         }
                     }
                 }
