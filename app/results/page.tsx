@@ -1,8 +1,5 @@
 "use client";
-
 import { useEffect, useState } from 'react';
-//import axios from 'axios';
-
 interface DocumentTraits {
     first_name?: string;
     last_name?: string;
@@ -21,16 +18,11 @@ interface DocumentTraits {
         postal_code?: string;
     };
 }
-
 interface VerificationData {
-    custom_fields?: {
-        dynid?: string;
-    };
     traits?: {
         document?: DocumentTraits;
     };
 }
-
 export default function ResultsPage() {
     const [verificationData, setVerificationData] = useState<VerificationData | null>(null);
     const [loading, setLoading] = useState(true);

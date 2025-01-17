@@ -9,6 +9,6 @@
     "\\app\\api\\retrive-config",
     "\\app\\results"
   ],
-  "SelectedNode": "\\app\\api\\clear-webhook\\route.ts",
+  "SelectedNode": "\\app\\api\\dyn-ce-operations\\route.ts",
   "PreviewInSolutionExplorer": false
 }

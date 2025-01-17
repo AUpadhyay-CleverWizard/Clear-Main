@@ -3,6 +3,7 @@ import axios from 'axios';
 
 export async function POST(req: NextRequest) {
     try {
+
         const projectId = process.env.PROJECT_ID;
         const apiKey = process.env.API_KEY;
         const redirectUrl = process.env.REDIRECT_BACK_URL;

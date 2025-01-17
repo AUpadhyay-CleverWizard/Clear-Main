@@ -1,57 +1,91 @@
 "use client"
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useSearchParams } from "next/navigation";
-// Define the response type
 type ConfigResponse = { clearme_url: string; };
+type ContactData = {
+    firstname: string;
+    lastname: string;
+    usc_enableclearverificationlink: boolean;
+};
 export default function Home() {
-    const searchParams = useSearchParams();  // Get query parameters
-    const id = searchParams.get("id");  // Get the `id` query parameter from URL 
+    const searchParams = useSearchParams();
+    const id = searchParams.get("id");
     if (!id) { window.location.href = "/404"; }
     const [loading, setLoading] = useState(false);
+    const [contactData, setContactData] = useState<ContactData | null>(null);
+    const loadContactName = async () => {
+        const reqBody = {
+            operation: "Retrieve",
+            entityName: 'contacts',
+            data: { id: id, },
+        };
+        const retrieveContact = await fetch('/api/dyn-ce-operations', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(reqBody)
+        });
+        const contactData = await retrieveContact.json();
+        if (!contactData) {
+            alert("The link has already been used or you are not authorise to access this.");
+            window.location.href = "/404";
+        }
+        if (!contactData.contactid) {
+            alert("The link has already been used or you are not authorise to access this.");
+            window.location.href = "/404";
+        }
+        else { setContactData(contactData); }
+    };
+    useEffect(() => {
+        const fetchData = async () => {
+            setLoading(true);
+            await loadContactName();
+            setLoading(false);
+        };
+        fetchData();
+    }, []);
     const handleVerification = async () => {
         setLoading(true);
         try {
             const response3 = await fetch('/api/retrive-config', { method: 'GET', });
             const urldata: ConfigResponse = await response3.json();
             const clearme_url: string = urldata.clearme_url;
-            const reqBody = {
-                operation: "Retrieve",
-                entityName: 'contacts',
-                data: {
-                    id: id,
-                    fields: ["usc_enableclearverificationlink"]
-                },  // The contactId received as a parameter
-            };
-            const retrieveContact = await fetch('/api/dyn-ce-operations', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' }, // Indicates that you're sending JSON data}
-                body: JSON.stringify(reqBody)
-            });
-            const contactData = await retrieveContact.json();
             if (contactData && contactData.usc_enableclearverificationlink) {
                 const response = await fetch('/api/create-session', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' }, // Indicates that you're sending JSON data}
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ dynid: id })
                 });
                 const data = await response.json();
                 if (data.token || clearme_url) {
-                    alert(clearme_url + `?token=${data.token}`)
-                    window.location.href = clearme_url + `?token=${data.token}`;
-                } else {
-                    window.location.href = "/404";
+                    const createreqBody = {
+                        operation: "Create",
+                        entityName: 'usc_clearverificationsessionses',
+                        data: {
+                            "usc_name": data.id,
+                            "usc_verificationdatatoken": data.token as string,
+                            "usc_clearverificationsessioncreatedon": new Date().toISOString(),
+                            "usc_ClearVerifiedPerson@odata.bind": `/contacts(${id})`
+                        },
+                    };
+                    const dynVerifictionSession = await fetch('/api/dyn-ce-operations', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' }, // Indicates that you're sending JSON data}
+                        body: JSON.stringify(createreqBody)
+                    });
+                    if (!dynVerifictionSession.ok) { alert("Something Went Wrong!"); window.location.href = "/404"; }
+                    const dynVerifictionData = await dynVerifictionSession.json();
+                    if (dynVerifictionData) { window.location.href = clearme_url + `?token=${data.token}`; }
+                    else { alert("Something Went Wrong!"); window.location.href = "/404"; }
                 }
-            } else {
-                alert("The link has already been used or you are not authorise to access this.");
+                else { window.location.href = "/404"; }
             }
-        } catch (error) {
-            console.error('Error starting verification:', error);
-            alert('Error starting verification');
-        } finally {
-            setLoading(false);
+            else { alert("The link has already been used or you are not authorise to access this."); }
         }
+        catch (error) { alert('Error starting verification'); }
+        finally { setLoading(false); }
     };
+
     return (
         <div
             className="flex flex-col items-center justify-center min-h-screen bg-gray-100 px-4 sm:px-6 lg:px-8 relative"
@@ -81,7 +115,7 @@ export default function Home() {
                     <div className="elementor-widget-container mb-6">
                         <h1 className="elementor-heading-title elementor-size-default">
                             <span className="heading-dark">
-                                Welcome to USClaims Verification Portal
+                                Welcome {loading ? "Loading..." : contactData?.firstname} {contactData?.lastname} to USClaims Verification Portal
                             </span>
                         </h1>
                     </div>
