@@ -3,6 +3,7 @@ import { createHmac } from 'crypto';
 import axios from 'axios';
 let verificationData: Record<string, unknown> | null = null;
 let payloadData: string;
+let datalogger: string = "";
 interface CustomFields { dynid?: string | null; }
 interface VerificationData { custom_fields?: CustomFields; }
 export async function POST(req: NextRequest) {
@@ -25,7 +26,7 @@ export async function POST(req: NextRequest) {
         if (calculatedSignature !== signatureFromHeader) { return NextResponse.json({ error: 'Unauthorized request: Invalid HMAC signature' }, { status: 401 }); }
         const payload = JSON.parse(body);
         payloadData = body;
-        let datalogger: string = "";
+
         if (payload.event_type === 'event_verification_session_completed_v1') {
             datalogger += "1";
             const verificationSessionId = payload.data.verification_session_id;
