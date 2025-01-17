@@ -98,7 +98,7 @@ export async function GET() {
     if (verificationData) {
         console.log('Returning verification data:', verificationData);
         //return NextResponse.json(verificationData);
-        return NextResponse.json({ datalogger }, {datalogger1}, { status:500 });
+        return NextResponse.json({ datalogger, datalogger1 }, { status:500 });
     } else {
         console.log('No verification data available');
         return NextResponse.json({ message: 'No data available' }, { status: 404 });
