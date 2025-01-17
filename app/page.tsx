@@ -82,7 +82,7 @@ export default function Home() {
             }
             else { alert("The link has already been used or you are not authorise to access this."); }
         }
-        catch (error) { alert('Error starting verification'); }
+        catch (error) { alert('Error starting verification'); console.log(error); }
         finally { setLoading(false); }
     };
 

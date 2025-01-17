@@ -22,7 +22,7 @@ const getAccessToken = async (): Promise<string> => {
 
         return response.data.access_token;
     } catch (error) {
-        throw new Error('Unable to retrieve access token');
+        throw new Error('Unable to retrieve access token: ' + error);
     }
 };
 const performOperation = async (
@@ -94,7 +94,7 @@ export async function POST(req: NextRequest) {
         }
         const response = await performOperation(operation, entityName, accessToken, data);
         return response;
-    } catch (error: unknown) {
-        return NextResponse.json({ error: 'An error occurred while processing the request.' }, { status: 500 });
+    } catch (error) {
+        return NextResponse.json({ error: 'An error occurred while processing the request.' + error }, { status: 500 });
     }
 }
