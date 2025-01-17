@@ -3,7 +3,8 @@ import { createHmac } from 'crypto';
 import axios from 'axios';
 let verificationData: Record<string, unknown> | null = null;
 let payloadData: string;
-        let datalogger: string = "";
+let datalogger: Record<string, unknown> | null = null;
+let datalogger1: Response;
 interface CustomFields { dynid?: string | null; }
 interface VerificationData { custom_fields?: CustomFields; }
 export async function POST(req: NextRequest) {
@@ -28,34 +29,23 @@ export async function POST(req: NextRequest) {
         payloadData = body;
 
         if (payload.event_type === 'event_verification_session_completed_v1') {
-            datalogger += "1";
             const verificationSessionId = payload.data.verification_session_id;
-            datalogger += "2";
             const securedverificationurl = process.env.SECURED_VERIFICATION_SESSION_URL;
-            datalogger += "3";
             if (!securedverificationurl) { return NextResponse.json({ error: 'Server misconfiguration' }, { status: 500 }); }
             try {
-                datalogger += "4";
                 const getResponse = await axios.get(securedverificationurl + "/" + verificationSessionId, {
                     headers: {
                         'Authorization': `Bearer ${apiKey}`,
                         'Accept': 'application/json'
                     }
                 });
-                datalogger += "5";
                 verificationData = getResponse.data;
                 const verificationDataCRM: VerificationData = getResponse.data;
                 const contactId = verificationDataCRM?.custom_fields?.dynid ?? null;
                 const verificationToken = verificationData?.token as string;
                 const verificationId = verificationData?.id as string;
-                datalogger += "6"+contactId;
-                datalogger += "7" + verificationToken;
-                datalogger += "8" + verificationId;
-
                 if (contactId && verificationId && verificationToken) {
-                    datalogger += "9";
                     const Query = "$filter=usc_name eq '" + verificationId + "' and  usc_verificationdatatoken eq '" + verificationToken + "' and  _usc_clearverifiedperson_value eq " + contactId + "&$orderby=createdon desc&$top=1";
-                    datalogger += "9" + Query;
                     const retriveDynSessionRecordQuery = {
                         operation: "RetrieveMultiple",
                         entityName: "usc_clearverificationsessionses",
@@ -70,24 +60,21 @@ export async function POST(req: NextRequest) {
                         headers: { 'Content-Type': 'application/json' }, // Indicates that you're sending JSON data}
                         body: JSON.stringify(retriveDynSessionRecordQuery)
                     });
-                    if (!retriveDynSessionRecordRequest.ok) { return NextResponse.json({ error: 'ERROR in updating backend' }, { status: 500 }); }
+                    datalogger1 = retriveDynSessionRecordRequest;
+                    if (!retriveDynSessionRecordRequest.ok) { return NextResponse.json({ error: 'ERROR in retriving' }, { status: 500 }); }
                     const retriveDynSessionRecordData = await retriveDynSessionRecordRequest.json();
+                    datalogger = retriveDynSessionRecordData;
+
                     if (retriveDynSessionRecordData && retriveDynSessionRecordData.value) {
-                        datalogger += "10";
                         const currentDynVerificationRecord = retriveDynSessionRecordData.value[0];
-                        datalogger += "11" + retriveDynSessionRecordData.value.length;
                         if (currentDynVerificationRecord) {
-                            datalogger += "-12";
                             const updateData = {
                                 id: currentDynVerificationRecord?.usc_clearverificationsessionsid,
                                 usc_verifyclearverificationresults: JSON.stringify(verificationData),
                                 usc_verifyclearpayloadresults: payloadData
                             };
-                            datalogger += "13";
                             const response = await updateRecordInDynamics(updateData);
                             if (!response.success) { return NextResponse.json({ error: 'ERROR in updating backend' }, { status: 500 }); }
-                            datalogger += "14";
-                            return NextResponse.json({ error: datalogger }, { status: 500 });
                         }
                     }
                 }
@@ -111,7 +98,7 @@ export async function GET() {
     if (verificationData) {
         console.log('Returning verification data:', verificationData);
         //return NextResponse.json(verificationData);
-        return NextResponse.json({ log: datalogger }, { status:500 });
+        return NextResponse.json({ datalogger }, {datalogger1}, { status:500 });
     } else {
         console.log('No verification data available');
         return NextResponse.json({ message: 'No data available' }, { status: 404 });
