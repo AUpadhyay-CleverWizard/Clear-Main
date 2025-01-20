@@ -125,9 +125,9 @@ export async function POST(req: NextRequest) {
                                 if (verificationData.email) { email = verificationData.email as string; }
                                 if (verificationData.user_id) { UserId = verificationData.user_id as string; }
                                 if (verificationData.traits) {
-                                    let Vdata: VerificationData = verificationData;
+                                    const Vdata: VerificationData = verificationData;
                                     if (Vdata && Vdata.traits && Vdata.traits.document) {
-                                        let DocumentTraits: DocumentTraits = Vdata.traits.document;
+                                        const DocumentTraits: DocumentTraits = Vdata.traits.document;
                                         if (DocumentTraits.date_of_birth) {
                                             const day: number = DocumentTraits.date_of_birth.day;
                                             const month: number = DocumentTraits.date_of_birth.month;
