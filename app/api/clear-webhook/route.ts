@@ -61,7 +61,7 @@ export async function POST(req: NextRequest) {
                     if (retriveDynSessionRecordData && retriveDynSessionRecordData.value) {
                         const currentDynVerificationRecord = retriveDynSessionRecordData.value[0];
                         if (currentDynVerificationRecord) {
-                            let verficationStatus: number = 860000000 //Not Started
+                            let verficationStatus: number = 860000005 //Not Started
                             let verificationCompletedAt: string = ""; 
                             let verificationExpiresAt: string = ""; 
                             if (verificationData) {
