@@ -25,7 +25,7 @@ interface VerificationData {
     };
 }
 export default function ResultsPage() {
-    const [verificationData, setVerificationData] = useState<VerificationData | null>(null);
+    //const [verificationData, setVerificationData] = useState<VerificationData | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     useEffect(() => {
@@ -38,7 +38,7 @@ export default function ResultsPage() {
             })
             .then((data: VerificationData) => {
                 console.log('Fetched verification data:', data);
-                setVerificationData(data);
+                //setVerificationData(data);
                 setLoading(false);
             })
             .catch((err) => {
