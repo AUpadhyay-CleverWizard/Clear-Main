@@ -50,6 +50,7 @@ export async function POST(req: NextRequest) {
         if (calculatedSignature !== signatureFromHeader) { return NextResponse.json({ error: 'Unauthorized request: Invalid HMAC signature' }, { status: 401 }); }
         const payload = JSON.parse(body);
         payloadData = body;
+
         if (payload.event_type === 'event_verification_session_completed_v1' || payload.event_type === 'event_verification_session_status_update_v1')
         {
             const verificationSessionId = payload.data.verification_session_id;
