@@ -14,6 +14,15 @@ export default function Home() {
     if (!id) { window.location.href = "/404"; }
     const [loading, setLoading] = useState(false);
     const [contactData, setContactData] = useState<ContactData | null>(null);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            setLoading(true);
+            await loadContactName();
+            setLoading(false);
+        };
+        fetchData();
+    }, []);
     const loadContactName = async () => {
         const reqBody = {
             operation: "Retrieve",
@@ -36,14 +45,6 @@ export default function Home() {
         }
         else { setContactData(contactData); }
     };
-    useEffect(() => {
-        const fetchData = async () => {
-            setLoading(true);
-            await loadContactName();
-            setLoading(false);
-        };
-        fetchData();
-    }, []);
     const handleVerification = async () => {
         setLoading(true);
         try {
