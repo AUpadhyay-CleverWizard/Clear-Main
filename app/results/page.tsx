@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 interface DocumentTraits {
     first_name?: string;
     last_name?: string;
@@ -58,18 +59,18 @@ export default function ResultsPage() {
         return <div>{error}</div>;
     }
 
-    const documentTraits = verificationData?.traits?.document;
-    if (!documentTraits) {
-        return <p>No document data available.</p>;
-    }
+    //const documentTraits = verificationData?.traits?.document;
+    //if (!documentTraits) {
+    //    return <p>No document data available.</p>;
+    //}
 
-    const dateOfBirth = documentTraits.date_of_birth
-        ? `${documentTraits.date_of_birth.day}/${documentTraits.date_of_birth.month}/${documentTraits.date_of_birth.year}`
-        : 'N/A';
+    //const dateOfBirth = documentTraits.date_of_birth
+    //    ? `${documentTraits.date_of_birth.day}/${documentTraits.date_of_birth.month}/${documentTraits.date_of_birth.year}`
+    //    : 'N/A';
 
-    const documentAddress = documentTraits.address
-        ? `${documentTraits.address.line1 || ''}, ${documentTraits.address.city || ''}, ${documentTraits.address.state || ''}, ${documentTraits.address.postal_code || ''}`
-        : 'N/A';
+    //const documentAddress = documentTraits.address
+    //    ? `${documentTraits.address.line1 || ''}, ${documentTraits.address.city || ''}, ${documentTraits.address.state || ''}, ${documentTraits.address.postal_code || ''}`
+    //    : 'N/A';
 
     return (
         //<div className="p-8">
