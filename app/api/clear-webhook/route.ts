@@ -50,7 +50,8 @@ export async function POST(req: NextRequest) {
         if (calculatedSignature !== signatureFromHeader) { return NextResponse.json({ error: 'Unauthorized request: Invalid HMAC signature' }, { status: 401 }); }
         const payload = JSON.parse(body);
         payloadData = body;
-        if (payload.event_type === 'event_verification_session_completed_v1') {
+        if (payload.event_type === 'event_verification_session_completed_v1' || payload.event_type === 'event_verification_session_status_update_v1')
+        {
             const verificationSessionId = payload.data.verification_session_id;
             const securedverificationurl = process.env.SECURED_VERIFICATION_SESSION_URL;
             if (!securedverificationurl) { return NextResponse.json({ error: 'Server misconfiguration' }, { status: 500 }); }
@@ -87,8 +88,8 @@ export async function POST(req: NextRequest) {
                         const currentDynVerificationRecord = retriveDynSessionRecordData.value[0];
                         if (currentDynVerificationRecord) {
                             let verficationStatus: number = 860000000 //Initiated
-                            let verificationCompletedAt: string = ""; 
-                            let verificationExpiresAt: string = ""; 
+                            let verificationCompletedAt: string = "";
+                            let verificationExpiresAt: string = "";
                             let firstName = null;
                             let middleName = null;
                             let lastName = null;
@@ -134,7 +135,7 @@ export async function POST(req: NextRequest) {
                                             const year: number = DocumentTraits.date_of_birth.year;
                                             DOB = new Date(year, month, day).toISOString();
                                         }
-                                        if (DocumentTraits.nationality) { nationality = DocumentTraits.nationality;  }
+                                        if (DocumentTraits.nationality) { nationality = DocumentTraits.nationality; }
                                         if (DocumentTraits.address) {
                                             if (DocumentTraits.address.line1) { addressLine1 = DocumentTraits.address.line1; }
                                             if (DocumentTraits.address.line2) { addressLine2 = DocumentTraits.address.line2; }
@@ -148,7 +149,7 @@ export async function POST(req: NextRequest) {
                                         if (DocumentTraits.last_name) { lastName = DocumentTraits.last_name; }
                                     }
                                 }
-                            }                                
+                            }
                             const updateData = {
                                 id: currentDynVerificationRecord?.usc_clearverificationsessionsid,
                                 usc_verifyclearverificationresults: JSON.stringify(verificationData),
@@ -169,7 +170,7 @@ export async function POST(req: NextRequest) {
                                 usc_addresscountry: addressCountry,
                                 usc_addresspostalcode: addressPostalCode,
                                 usc_dateofbirth: DOB,
-                                usc_userid:UserId
+                                usc_userid: UserId
                             };
                             const response = await updateRecordInDynamics(updateData);
                             if (!response.success) { return NextResponse.json({ error: 'ERROR in updating backend' }, { status: 500 }); }
@@ -184,6 +185,9 @@ export async function POST(req: NextRequest) {
                 console.error('Error making GET request to fetch verification session:', getError);
                 return NextResponse.json({ error: 'Failed to retrieve verification session' }, { status: 500 });
             }
+        }
+        else {
+
         }
         return NextResponse.json({ success: true });
     } catch (error) {
