@@ -38,7 +38,6 @@ export default function ResultsPage() {
             })
             .then((data: VerificationData) => {
                 console.log('Fetched verification data:', data);
-                //setVerificationData(data);
                 setLoading(false);
             })
             .catch((err) => {
@@ -48,15 +47,88 @@ export default function ResultsPage() {
             });
     }, []);
 
-
-    const closeCurrentTab = async () => { window.close(); };
-
     if (loading) {
-        return <div>Loading...</div>;
+        return <div
+            className="flex flex-col items-center justify-center min-h-screen bg-gray-100 px-4 sm:px-6 lg:px-8 relative"
+            style={{
+                backgroundImage: `url('/Hero-image@2.png')`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+            }}
+        >
+            <main
+                className="text-center max-w-2xl p-6 sm:p-8 rounded-lg shadow-md flex flex-col items-center relative z-10"
+                style={{
+                    backgroundColor: 'rgba(255, 255, 255, 0.80)'
+                }}
+            >
+                <header className="mb-4">
+                    <Image
+                        src="/logo-desktop.svg"
+                        alt="CLEAR Logo"
+                        className="h-16 sm:h-20"
+                        width={500}
+                        height={500}
+                    />
+                </header>
+                <div className="mb-6">
+                    <div className="elementor-widget-container mb-6">
+                        <h1 className="elementor-heading-title elementor-size-default">
+                            <span className="heading-dark">
+                                Processing!
+                            </span>
+                        </h1>
+                    </div>
+                    <span className="subheading">
+                        Please wait while we process your request!
+                    </span>
+                </div>
+                <br></br>
+            </main>
+        </div>;
     }
 
     if (error) {
-        return <div>{error}</div>;
+        return <div
+            className="flex flex-col items-center justify-center min-h-screen bg-gray-100 px-4 sm:px-6 lg:px-8 relative"
+            style={{
+                backgroundImage: `url('/Hero-image@2.png')`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+            }}
+        >
+            <main
+                className="text-center max-w-2xl p-6 sm:p-8 rounded-lg shadow-md flex flex-col items-center relative z-10"
+                style={{
+                    backgroundColor: 'rgba(255, 255, 255, 0.80)'
+                }}
+            >
+                <header className="mb-4">
+                    <Image
+                        src="/logo-desktop.svg"
+                        alt="CLEAR Logo"
+                        className="h-16 sm:h-20"
+                        width={500}
+                        height={500}
+                    />
+                </header>
+                <div className="mb-6">
+                    <div className="elementor-widget-container mb-6">
+                        <h1 className="elementor-heading-title elementor-size-default">
+                            <span className="heading-dark">
+                                {error}
+                            </span>
+                        </h1>
+                    </div>
+                    <span className="subheading">
+                        Something went wrong, please contact USClaims Support!
+                    </span>
+                </div>
+                <br></br>
+            </main>
+        </div>;
     }
 
     //const documentTraits = verificationData?.traits?.document;
