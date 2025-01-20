@@ -111,7 +111,7 @@ export async function POST(req: NextRequest) {
                                 else if (verificationData.status == "canceled") { verficationStatus = 860000005; }
                                 else if (verificationData.status == "expired") { verficationStatus = 860000003; }
                                 else if (verificationData.status == "fail") { verficationStatus = 860000002; }
-                                else if (verificationData.status == "manual_fail ") { verficationStatus = 860000007; }
+                                else if (verificationData.status == "manual_fail") { verficationStatus = 860000007; }
                                 else if (verificationData.status == "processing_data") { verficationStatus = 860000006; }
                                 else if (verificationData.status == "success") { verficationStatus = 860000001; }
                                 else if (verificationData.status == "manual_success") { verficationStatus = 860000009; }
