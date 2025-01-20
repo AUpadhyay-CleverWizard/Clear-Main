@@ -61,10 +61,36 @@ export async function POST(req: NextRequest) {
                     if (retriveDynSessionRecordData && retriveDynSessionRecordData.value) {
                         const currentDynVerificationRecord = retriveDynSessionRecordData.value[0];
                         if (currentDynVerificationRecord) {
+                            let verficationStatus: number = 860000000 //Not Started
+                            let verificationCompletedAt: string = ""; 
+                            let verificationExpiresAt: string = ""; 
+                            if (verificationData) {
+                                if (verificationData.status == "not_started") { verficationStatus = 860000000; }
+                                else if (verificationData.status == "success") { verficationStatus = 860000001; }
+                                else if (verificationData.status == "failed") { verficationStatus = 860000002; }
+                                else if (verificationData.status == "expired") { verficationStatus = 860000003; }
+                                else if (verificationData.status == "awaiting_user_input") { verficationStatus = 860000004; }
+                                else if (verificationData.status == "canceled") { verficationStatus = 860000005; }
+
+                                if (verificationData.completed_at) {
+                                    let completed_at = verificationData.completed_at as number * 1000;
+                                    const dateObject = new Date(completed_at);
+                                    verificationCompletedAt = dateObject.toISOString();
+                                }
+                                if (verificationData.expires_at) {
+                                    let expires_at = verificationData.expires_at as number * 1000;
+                                    const dateObject = new Date(expires_at);
+                                    verificationExpiresAt = dateObject.toISOString();
+                                }
+                            }
+                            
                             const updateData = {
                                 id: currentDynVerificationRecord?.usc_clearverificationsessionsid,
                                 usc_verifyclearverificationresults: JSON.stringify(verificationData),
-                                usc_verifyclearpayloadresults: payloadData
+                                usc_verifyclearpayloadresults: payloadData,
+                                usc_clearverificationstatus: verficationStatus,
+                                usc_clearverificationsessionexpiringon: verificationExpiresAt === "" ? null : verificationExpiresAt,
+                                usc_clearverificationsessioncompletedon: verificationCompletedAt === "" ? null : verificationCompletedAt
                             };
                             const response = await updateRecordInDynamics(updateData);
                             if (!response.success) { return NextResponse.json({ error: 'ERROR in updating backend' }, { status: 500 }); }
@@ -97,7 +123,7 @@ export async function GET() {
     }
 }
 
-type UpdateData = { [key: string]: string | undefined; };
+type UpdateData = { [key: string]: string| number | undefined | null; };
 
 const updateRecordInDynamics = async (updateData: UpdateData): Promise<{ success: boolean; message: string }> => {
     const dataToUpdate = {
