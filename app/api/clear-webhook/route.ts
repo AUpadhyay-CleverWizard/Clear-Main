@@ -61,17 +61,19 @@ export async function POST(req: NextRequest) {
                     if (retriveDynSessionRecordData && retriveDynSessionRecordData.value) {
                         const currentDynVerificationRecord = retriveDynSessionRecordData.value[0];
                         if (currentDynVerificationRecord) {
-                            let verficationStatus: number = 860000005 //Not Started
+                            let verficationStatus: number = 860000000 //Initiated
                             let verificationCompletedAt: string = ""; 
                             let verificationExpiresAt: string = ""; 
                             if (verificationData) {
-                                if (verificationData.status == "not_started") { verficationStatus = 860000000; }
-                                else if (verificationData.status == "success") { verficationStatus = 860000001; }
-                                else if (verificationData.status == "failed") { verficationStatus = 860000002; }
-                                else if (verificationData.status == "expired") { verficationStatus = 860000003; }
+                                if (verificationData.status == "awaiting_manual_review") { verficationStatus = 860000008; }
                                 else if (verificationData.status == "awaiting_user_input") { verficationStatus = 860000004; }
                                 else if (verificationData.status == "canceled") { verficationStatus = 860000005; }
-
+                                else if (verificationData.status == "expired") { verficationStatus = 860000003; }
+                                else if (verificationData.status == "fail") { verficationStatus = 860000002; }
+                                else if (verificationData.status == "manual_fail ") { verficationStatus = 860000007; }
+                                else if (verificationData.status == "processing_data") { verficationStatus = 860000006; }
+                                else if (verificationData.status == "success") { verficationStatus = 860000001; }
+                                else if (verificationData.status == "manual_success") { verficationStatus = 860000009; }
                                 if (verificationData.completed_at) {
                                     const dateObject = new Date(verificationData.completed_at as number * 1000);
                                     verificationCompletedAt = dateObject.toISOString();
