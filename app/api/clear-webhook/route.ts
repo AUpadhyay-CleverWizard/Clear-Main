@@ -28,9 +28,7 @@ interface DocumentTraits {
     nationality?: string;
 }
 interface VerificationData {
-    traits?: {
-        document?: DocumentTraits;
-    };
+    traits?: { document?: DocumentTraits; };
 }
 export async function POST(req: NextRequest) {
     try {
@@ -123,9 +121,9 @@ export async function POST(req: NextRequest) {
                                     const dateObject = new Date(verificationData.expires_at as number * 1000);
                                     verificationExpiresAt = dateObject.toISOString();
                                 }
-                                if (verificationData.phone) { phone = verificationData.phone; }
-                                if (verificationData.email) { email = verificationData.email; }
-                                if (verificationData.user_id) { UserId = verificationData.user_id; }
+                                if (verificationData.phone) { phone = verificationData.phone as string; }
+                                if (verificationData.email) { email = verificationData.email as string; }
+                                if (verificationData.user_id) { UserId = verificationData.user_id as string; }
                                 if (verificationData.traits) {
                                     let Vdata: VerificationData = verificationData;
                                     if (Vdata && Vdata.traits && Vdata.traits.document) {
@@ -134,7 +132,7 @@ export async function POST(req: NextRequest) {
                                             const day: number = DocumentTraits.date_of_birth.day;
                                             const month: number = DocumentTraits.date_of_birth.month;
                                             const year: number = DocumentTraits.date_of_birth.year;
-                                            DOB = new Date(year, month, day);
+                                            DOB = new Date(year, month, day).toISOString();
                                         }
                                         if (DocumentTraits.nationality) { nationality = DocumentTraits.nationality;  }
                                         if (DocumentTraits.address) {
@@ -150,12 +148,6 @@ export async function POST(req: NextRequest) {
                                         if (DocumentTraits.last_name) { lastName = DocumentTraits.last_name; }
                                     }
                                 }
-
-
-                                
-
-
-
                             }                                
                             const updateData = {
                                 id: currentDynVerificationRecord?.usc_clearverificationsessionsid,
@@ -163,7 +155,21 @@ export async function POST(req: NextRequest) {
                                 usc_verifyclearpayloadresults: payloadData,
                                 usc_clearverificationstatus: verficationStatus,
                                 usc_clearverificationsessionexpiringon: verificationExpiresAt === "" ? null : verificationExpiresAt,
-                                usc_clearverificationsessioncompletedon: verificationCompletedAt === "" ? null : verificationCompletedAt
+                                usc_clearverificationsessioncompletedon: verificationCompletedAt === "" ? null : verificationCompletedAt,
+                                usc_firstname: firstName,
+                                usc_middlename: middleName,
+                                usc_lastname: lastName,
+                                usc_nationality: nationality,
+                                usc_phone: phone,
+                                usc_email: email,
+                                usc_addressline1: addressLine1,
+                                usc_addressline2: addressLine2,
+                                usc_addresscity: addressCity,
+                                usc_addressstate: addressState,
+                                usc_addresscountry: addressCountry,
+                                usc_addresspostalcode: addressPostalCode,
+                                usc_dateofbirth: DOB,
+                                usc_userid:UserId
                             };
                             const response = await updateRecordInDynamics(updateData);
                             if (!response.success) { return NextResponse.json({ error: 'ERROR in updating backend' }, { status: 500 }); }
