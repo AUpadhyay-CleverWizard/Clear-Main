@@ -5,6 +5,33 @@ let verificationData: Record<string, unknown> | null = null;
 let payloadData: string;
 interface CustomFields { dynid?: string | null; }
 interface VerificationData { custom_fields?: CustomFields; }
+interface DocumentTraits {
+    first_name?: string;
+    last_name?: string;
+    middle_name?: string;
+    issuing_country?: string;
+    issuing_subdivision?: string;
+    gender?: string;
+    date_of_birth?: {
+        day: number;
+        month: number;
+        year: number;
+    };
+    address?: {
+        line1?: string;
+        line2?: string;
+        city?: string;
+        state?: string;
+        postal_code?: string;
+        country?: string;
+    };
+    nationality?: string;
+}
+interface VerificationData {
+    traits?: {
+        document?: DocumentTraits;
+    };
+}
 export async function POST(req: NextRequest) {
     try {
         const webhookToken = process.env.WEBHOOK_TOKEN;
@@ -64,6 +91,20 @@ export async function POST(req: NextRequest) {
                             let verficationStatus: number = 860000000 //Initiated
                             let verificationCompletedAt: string = ""; 
                             let verificationExpiresAt: string = ""; 
+                            let firstName = null;
+                            let middleName = null;
+                            let lastName = null;
+                            let nationality = null;
+                            let phone = null;
+                            let email = null;
+                            let addressLine1 = null;
+                            let addressLine2 = null;
+                            let addressCity = null;
+                            let addressState = null;
+                            let addressPostalCode = null;
+                            let addressCountry = null;
+                            let DOB = null;
+                            let UserId = null;
                             if (verificationData) {
                                 if (verificationData.status == "awaiting_manual_review") { verficationStatus = 860000008; }
                                 else if (verificationData.status == "awaiting_user_input") { verficationStatus = 860000004; }
@@ -82,6 +123,39 @@ export async function POST(req: NextRequest) {
                                     const dateObject = new Date(verificationData.expires_at as number * 1000);
                                     verificationExpiresAt = dateObject.toISOString();
                                 }
+                                if (verificationData.phone) { phone = verificationData.phone; }
+                                if (verificationData.email) { email = verificationData.email; }
+                                if (verificationData.user_id) { UserId = verificationData.user_id; }
+                                if (verificationData.traits) {
+                                    let Vdata: VerificationData = verificationData;
+                                    if (Vdata && Vdata.traits && Vdata.traits.document) {
+                                        let DocumentTraits: DocumentTraits = Vdata.traits.document;
+                                        if (DocumentTraits.date_of_birth) {
+                                            const day: number = DocumentTraits.date_of_birth.day;
+                                            const month: number = DocumentTraits.date_of_birth.month;
+                                            const year: number = DocumentTraits.date_of_birth.year;
+                                            DOB = new Date(year, month, day);
+                                        }
+                                        if (DocumentTraits.nationality) { nationality = DocumentTraits.nationality;  }
+                                        if (DocumentTraits.address) {
+                                            if (DocumentTraits.address.line1) { addressLine1 = DocumentTraits.address.line1; }
+                                            if (DocumentTraits.address.line2) { addressLine2 = DocumentTraits.address.line2; }
+                                            if (DocumentTraits.address.city) { addressCity = DocumentTraits.address.city; }
+                                            if (DocumentTraits.address.state) { addressState = DocumentTraits.address.state; }
+                                            if (DocumentTraits.address.postal_code) { addressPostalCode = DocumentTraits.address.postal_code; }
+                                            if (DocumentTraits.address.country) { addressCountry = DocumentTraits.address.country; }
+                                        }
+                                        if (DocumentTraits.first_name) { firstName = DocumentTraits.first_name; }
+                                        if (DocumentTraits.middle_name) { middleName = DocumentTraits.middle_name; }
+                                        if (DocumentTraits.last_name) { lastName = DocumentTraits.last_name; }
+                                    }
+                                }
+
+
+                                
+
+
+
                             }                                
                             const updateData = {
                                 id: currentDynVerificationRecord?.usc_clearverificationsessionsid,
