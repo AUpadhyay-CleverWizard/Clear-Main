@@ -80,7 +80,7 @@ export async function POST(req: NextRequest) {
                                     const dateObject = new Date(verificationData.expires_at as number * 1000);
                                     verificationExpiresAt = dateObject.toISOString();
                                 }
-                            }
+                            }                                
                             const updateData = {
                                 id: currentDynVerificationRecord?.usc_clearverificationsessionsid,
                                 usc_verifyclearverificationresults: JSON.stringify(verificationData),
