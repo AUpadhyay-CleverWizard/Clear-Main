@@ -73,14 +73,17 @@ export async function POST(req: NextRequest) {
                                 else if (verificationData.status == "canceled") { verficationStatus = 860000005; }
 
                                 if (verificationData.completed_at) {
-                                    const dateObject = new Date(verificationData.completed_at as number * 1000);
+                                    let completed_at = verificationData.completed_at as number * 1000;
+                                    const dateObject = new Date(completed_at);
                                     verificationCompletedAt = dateObject.toISOString();
                                 }
                                 if (verificationData.expires_at) {
-                                    const dateObject = new Date(verificationData.expires_at as number * 1000);
+                                    let expires_at = verificationData.expires_at as number * 1000;
+                                    const dateObject = new Date(expires_at);
                                     verificationExpiresAt = dateObject.toISOString();
                                 }
                             }
+                            
                             const updateData = {
                                 id: currentDynVerificationRecord?.usc_clearverificationsessionsid,
                                 usc_verifyclearverificationresults: JSON.stringify(verificationData),
